@@ -1,0 +1,132 @@
+/* ── Tokens — Light Theme ───────────────────────────────── */
+:root {
+  --bg: #f0f2f5;
+  --surface: #e8ebf0;
+  --panel: #ffffff;
+  --panel-hi: #edf0f5;
+  --border: #b8c2d0;
+  --border-hi: #8a97aa;
+
+  --accent: #1d4ed8;
+  --accent-dim: rgba(29, 78, 216, 0.10);
+  --accent-glow: rgba(29, 78, 216, 0.25);
+  --accent-hi: #1e40af;
+
+  --success: #0e7c4a;
+  --warn: #b45309;
+  --error: #c0182e;
+  --info: #1d5fb4;
+
+  --text: #0f1929;
+  --text-dim: #3d4f66;
+  --text-mid: #1e3050;
+  --text-hi: #000912;
+
+  --mono: 'IBM Plex Mono', monospace;
+  --display: 'Syne', sans-serif;
+  --body: 'DM Sans', sans-serif;
+
+  --r: 6px;
+  --r-sm: 4px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Subtle dot grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scrollbars ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--panel-hi);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hi);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}
+
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scan {
+  from {
+    left: -50%;
+  }
+
+  to {
+    left: 150%;
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}

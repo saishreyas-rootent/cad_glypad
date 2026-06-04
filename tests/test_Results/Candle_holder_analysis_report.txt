@@ -1,0 +1,43 @@
+======================================================================
+  CAD DRAWING ANALYSIS - MANUFACTURING INSPECTION REPORT
+======================================================================
+
+Generated: 2026-01-30 12:29:44
+Source: Candle_holder.jpg
+Tolerance Class: ISO 2768-m
+
+--------------------------------------------------
+DRAWING INFORMATION
+--------------------------------------------------
+  Title:    Ljushållare HT2022
+  Number:   2022001
+  Material: SS 1914
+  Scale:    1:1
+  Standard: None
+
+--------------------------------------------------
+DIMENSIONS (11 found)
+--------------------------------------------------
+
+  Standard dimensions (ISO 2768-m):
+      • ⌀42 [general tol applied]
+      • 38 [general tol applied]
+      • 5 [general tol applied]
+      • 1x45° [general tol applied]
+      • ⌀38 [general tol applied]
+      • 16 [general tol applied]
+      • ⌀21,5±0,1
+      • (25,5) [general tol applied]
+      • 60,0° [general tol applied]
+      • ⌀38 H12
+      • 45,0° [general tol applied]
+
+--------------------------------------------------
+MANUFACTURING NOTES
+--------------------------------------------------
+  [EDGE_TREATMENT]
+    BREAK ALL SHARP EDGES AND REMOVE BURRS
+
+======================================================================
+END OF REPORT
+======================================================================

@@ -1,0 +1,172 @@
+{
+  "info_block": {
+    "drawing_number": "UR10_29.20",
+    "title": "Weird_Gripper_Cam_Adapter",
+    "material": "PLA",
+    "scale": "1:1",
+    "standard": null,
+    "tolerance_class": null,
+    "surface_finish": "Ra 12",
+    "date": null
+  },
+  "dimensions": [
+    {
+      "id": 1,
+      "value": "35.36+0.03\n-0.03",
+      "nominal": 35.36,
+      "has_tolerance": true,
+      "tolerance_type": "specific",
+      "upper_tolerance": 0.03,
+      "lower_tolerance": -0.03,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false
+    },
+    {
+      "id": 2,
+      "value": "\u230070.50 \u00b10.05",
+      "nominal": 70.5,
+      "has_tolerance": true,
+      "tolerance_type": "specific",
+      "upper_tolerance": 0.05,
+      "lower_tolerance": -0.05,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false
+    },
+    {
+      "id": 3,
+      "value": "16.00\n15.50",
+      "nominal": 15.75,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 4,
+      "value": "4x\u23006.60+0.40\n-0.10",
+      "nominal": 6.6,
+      "has_tolerance": true,
+      "tolerance_type": "specific",
+      "upper_tolerance": 0.4,
+      "lower_tolerance": -0.1,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false
+    },
+    {
+      "id": 5,
+      "value": "\u23006.15",
+      "nominal": 6.15,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 6,
+      "value": "\u230068.50",
+      "nominal": 68.5,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 7,
+      "value": "8.20\n8.00",
+      "nominal": 8.1,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 8,
+      "value": "45\u00b0",
+      "nominal": 45,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 9,
+      "value": "7.00",
+      "nominal": 7.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 10,
+      "value": "6.15\n6.00",
+      "nominal": 6.075,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 11,
+      "value": "R1.00 \u00b10.10",
+      "nominal": 1.0,
+      "has_tolerance": true,
+      "tolerance_type": "specific",
+      "upper_tolerance": 0.1,
+      "lower_tolerance": -0.1,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false
+    }
+  ],
+  "gdts": [],
+  "manufacturing_notes": [
+    {
+      "category": "surface_finish",
+      "text": "UNLESS OTHERWISE SPECIFIED: DIMENSIONS ARE IN MILLIMETERS",
+      "requirement": "dimensions_are_in_millimeters"
+    },
+    {
+      "category": "edge_treatment",
+      "text": "DEBURR AND BREAK SHARP EDGES",
+      "requirement": "deburr_and_break_sharp_edges"
+    }
+  ],
+  "special_requirements": {
+    "requires_go_nogo_gauge": false,
+    "gauge_dimensions": [],
+    "critical_features": [],
+    "special_processes": []
+  }
+}

@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+build/
+_build/
+dist/
+notebooks/
+versioneer.pyc
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+static/
+
+# Environment & secrets
+.env
+*.env
+
+# OS
+.DS_Store
+.vscode/

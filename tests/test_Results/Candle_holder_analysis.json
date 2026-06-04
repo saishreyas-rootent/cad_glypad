@@ -1,0 +1,169 @@
+{
+  "info_block": {
+    "drawing_number": "2022001",
+    "title": "Ljush\u00e5llare HT2022",
+    "material": "SS 1914",
+    "scale": "1:1",
+    "standard": null,
+    "tolerance_class": null,
+    "surface_finish": null,
+    "date": "2022-08-26"
+  },
+  "dimensions": [
+    {
+      "id": 1,
+      "value": "\u230042",
+      "nominal": 42.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 2,
+      "value": "38",
+      "nominal": 38.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 3,
+      "value": "5",
+      "nominal": 5.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.1,
+      "lower_tolerance": -0.1,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 4,
+      "value": "1x45\u00b0",
+      "nominal": 45.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 5,
+      "value": "\u230038",
+      "nominal": 38.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 6,
+      "value": "16",
+      "nominal": 16.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 7,
+      "value": "\u230021,5\u00b10,1",
+      "nominal": 21.5,
+      "has_tolerance": true,
+      "tolerance_type": "specific",
+      "upper_tolerance": 0.1,
+      "lower_tolerance": -0.1,
+      "fit_class": null,
+      "is_diameter": true,
+      "is_critical": false
+    },
+    {
+      "id": 8,
+      "value": "(25,5)",
+      "nominal": 25.5,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.2,
+      "lower_tolerance": -0.2,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 9,
+      "value": "60,0\u00b0",
+      "nominal": 60.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    },
+    {
+      "id": 10,
+      "value": "\u230038 H12",
+      "nominal": 38.0,
+      "has_tolerance": true,
+      "tolerance_type": "fit",
+      "upper_tolerance": null,
+      "lower_tolerance": null,
+      "fit_class": "H12",
+      "is_diameter": true,
+      "is_critical": false
+    },
+    {
+      "id": 11,
+      "value": "45,0\u00b0",
+      "nominal": 45.0,
+      "has_tolerance": false,
+      "tolerance_type": "ISO2768-m",
+      "upper_tolerance": 0.3,
+      "lower_tolerance": -0.3,
+      "fit_class": null,
+      "is_diameter": false,
+      "is_critical": false,
+      "applied_general_tolerance": true
+    }
+  ],
+  "gdts": [],
+  "manufacturing_notes": [
+    {
+      "category": "edge_treatment",
+      "text": "BREAK ALL SHARP EDGES AND REMOVE BURRS",
+      "requirement": "Remove sharp edges and burrs"
+    }
+  ],
+  "special_requirements": {
+    "requires_go_nogo_gauge": false,
+    "gauge_dimensions": [],
+    "critical_features": [],
+    "special_processes": []
+  }
+}
