@@ -620,12 +620,7 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
     </div>
   )
 
-  const SummaryPill = ({ label, count, colour }) => (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'var(--panel-hi)', border: '1px solid var(--border)', borderRadius: 'var(--r-sm)', padding: '8px 16px', minWidth: '70px' }}>
-      <span style={{ fontFamily: 'var(--mono)', fontSize: '22px', fontWeight: 700, color: colour, lineHeight: 1 }}>{count ?? 0}</span>
-      <span style={{ ...monoSm, color: 'var(--text-dim)', marginTop: '3px', textTransform: 'uppercase' }}>{label}</span>
-    </div>
-  )
+
 
   const FilterChip = ({ value, label, count }) => {
     const active = filter === value
@@ -649,28 +644,6 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-      {/* ── Summary strip ── */}
-      {result && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <SummaryPill label="Total" count={rows.length} colour="var(--text-hi)" />
-          <SummaryPill label="Match" count={statusCounts.match} colour="var(--success)" />
-          <SummaryPill label="Deviation" count={statusCounts.deviation} colour="var(--warn)" />
-          <SummaryPill label="Added" count={statusCounts.added} colour="var(--info)" />
-          <SummaryPill label="Removed" count={statusCounts.removed} colour="var(--error)" />
-          <div style={{ flex: 1 }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--panel-hi)', border: '1px solid var(--border)', borderRadius: 'var(--r-sm)', padding: '8px 14px' }}>
-            <span style={{ ...monoSm, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Similarity</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '18px', fontWeight: 700, color: simPct >= 90 ? 'var(--success)' : simPct >= 70 ? 'var(--warn)' : 'var(--error)' }}>
-              {simPct !== null ? `${simPct}%` : '—'}
-            </span>
-          </div>
-          {result.cache_hit && (
-            <div style={{ ...monoSm, color: 'var(--text-dim)', background: 'var(--panel-hi)', border: '1px solid var(--border)', borderRadius: '3px', padding: '4px 8px', textTransform: 'uppercase' }}>
-              ⚡ Cached
-            </div>
-          )}
-        </div>
-      )}
 
       {/* ── Split pane ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', minHeight: '420px' }}>
@@ -749,7 +722,6 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
               <div style={{ width: '160px', height: '2px', background: 'var(--border)', borderRadius: '1px', overflow: 'hidden', position: 'relative' }}>
                 <div style={{ position: 'absolute', top: 0, left: '-50%', width: '50%', height: '100%', background: 'linear-gradient(to right, transparent, var(--accent), transparent)', animation: 'scan 1.3s ease-in-out infinite' }} />
               </div>
-              <div style={{ ...monoSm, textTransform: 'uppercase', color: 'var(--accent)', letterSpacing: '0.14em', animation: 'blink 2s ease-in-out infinite' }}>Analysing with Gemini Vision…</div>
               <div style={{ ...monoSm, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Extracting &amp; comparing all dimensions</div>
             </div>
           )}
@@ -785,18 +757,18 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
           </div>
 
           <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: 'var(--r-sm)' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', background: 'var(--panel)', tableLayout: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', background: 'var(--panel)', tableLayout: 'fixed' }}>
               <thead>
                 <tr>
-                  <th style={{ ...thStyle, width: '36px' }}>#</th>
-                  <th style={thStyle}>Feature</th>
-                  <th style={thStyle}>Type</th>
-                  <th style={thStyle}>Original Value</th>
-                  <th style={thStyle}>Revised Value</th>
-                  <th style={thStyle}>Original Tol</th>
-                  <th style={thStyle}>Revised Tol</th>
-                  <th style={thStyle}>Change</th>
-                  <th style={{ ...thStyle, width: '100px' }}>Status</th>
+                  <th style={{ ...thStyle, width: '4%' }}>#</th>
+                  <th style={{ ...thStyle, width: '16%' }}>Feature</th>
+                  <th style={{ ...thStyle, width: '10%' }}>Type</th>
+                  <th style={{ ...thStyle, width: '11%' }}>Orig Val</th>
+                  <th style={{ ...thStyle, width: '11%' }}>Rev Val</th>
+                  <th style={{ ...thStyle, width: '11%' }}>Orig Tol</th>
+                  <th style={{ ...thStyle, width: '11%' }}>Rev Tol</th>
+                  <th style={{ ...thStyle, width: '15%' }}>Change</th>
+                  <th style={{ ...thStyle, width: '11%' }}>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -809,20 +781,20 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(29,78,216,0.04)'}
                       onMouseLeave={e => e.currentTarget.style.background = odd ? 'var(--panel-hi)' : 'transparent'}
                     >
-                      <td style={{ ...monoSm, color: 'var(--text-dim)', padding: '9px 12px', borderBottom: '1px solid var(--border)', textAlign: 'center' }}>{i + 1}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', fontWeight: 500, color: 'var(--text-hi)', padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.feature || '—'}</td>
-                      <td style={{ ...monoSm, color: 'var(--text-dim)', padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{row.type || '—'}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--text)', padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{row.original_value || '—'}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: row.status !== 'match' ? st.color : 'var(--text)', fontWeight: row.status !== 'match' ? 600 : 400, padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{row.compared_value || '—'}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--info)', padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{row.original_tolerance || '—'}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: row.original_tolerance !== row.compared_tolerance && row.status !== 'match' ? st.color : 'var(--info)', fontWeight: row.original_tolerance !== row.compared_tolerance && row.status !== 'match' ? 600 : 400, padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{row.compared_tolerance || '—'}</td>
-                      <td style={{ fontFamily: 'var(--mono)', fontSize: '12px', color: 'var(--text-dim)', padding: '9px 12px', borderBottom: '1px solid var(--border)', lineHeight: 1.5, maxWidth: '220px' }}>
+                      <td style={{ ...monoSm, color: 'var(--text-dim)', padding: '9px 8px', borderBottom: '1px solid var(--border)', textAlign: 'center', wordBreak: 'break-word' }}>{i + 1}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', fontWeight: 500, color: 'var(--text-hi)', padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.feature || '—'}</td>
+                      <td style={{ ...monoSm, color: 'var(--text-dim)', padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.type || '—'}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--text)', padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.original_value || '—'}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: row.status !== 'match' ? st.color : 'var(--text)', fontWeight: row.status !== 'match' ? 600 : 400, padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.compared_value || '—'}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--info)', padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.original_tolerance || '—'}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: row.original_tolerance !== row.compared_tolerance && row.status !== 'match' ? st.color : 'var(--info)', fontWeight: row.original_tolerance !== row.compared_tolerance && row.status !== 'match' ? 600 : 400, padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>{row.compared_tolerance || '—'}</td>
+                      <td style={{ fontFamily: 'var(--mono)', fontSize: '12px', color: 'var(--text-dim)', padding: '9px 8px', borderBottom: '1px solid var(--border)', lineHeight: 1.5, wordBreak: 'break-word' }}>
                         {row.change_description && row.change_description !== 'No change'
                           ? row.change_description
                           : <span style={{ opacity: 0.4 }}>—</span>}
                       </td>
-                      <td style={{ padding: '9px 12px', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--mono)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', padding: '3px 8px', borderRadius: '3px', color: st.color, background: st.bg, border: `1px solid ${st.border}` }}>
+                      <td style={{ padding: '9px 8px', borderBottom: '1px solid var(--border)', wordBreak: 'break-word' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontFamily: 'var(--mono)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', padding: '3px 6px', borderRadius: '3px', color: st.color, background: st.bg, border: `1px solid ${st.border}` }}>
                           {statusIcon(row.status)} {row.status}
                         </span>
                       </td>
@@ -847,9 +819,9 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
         <div style={{ border: '1px dashed var(--border)', borderRadius: 'var(--r)', padding: '32px', textAlign: 'center', fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.08em', lineHeight: 2 }}>
           Upload a revised drawing in the right pane to begin the comparison.<br />
           <span style={{ opacity: 0.55, fontSize: '12px' }}>
-            Gemini Vision extracts every dimension, tolerance, GD&amp;T symbol and annotation from both drawings and highlights all changes on the revised image.
+            Tesseract OCR extracts every dimension, tolerance, GD&amp;T symbol and annotation from both drawings and highlights all changes on the revised image.
             <br />
-            Pixel-level diff always works even when the Gemini quota is exhausted.
+            A pixel-level diff overlay is also produced as a secondary visual reference.
           </span>
         </div>
       )}
