@@ -29,8 +29,8 @@ class CADAnalyzer:
             raise ValueError("GEMINI_API_KEY not found")
         
         genai.configure(api_key=self.api_key)
-        # We use flash for speed; if it still fails, gemini-1.5-pro is the backup
-        self.model = genai.GenerativeModel('gemini-3-flash-preview')
+        model_name = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash')
+        self.model = genai.GenerativeModel(model_name)
         self.request_timeout_seconds = int(os.getenv("GEMINI_TIMEOUT_SECONDS", "90"))
         self.pdf_request_timeout_seconds = int(os.getenv("GEMINI_PDF_TIMEOUT_SECONDS", "180"))
         self.max_retries = int(os.getenv("GEMINI_MAX_RETRIES", "2"))
@@ -287,7 +287,7 @@ class CADAnalyzer:
             elif "```" in text:
                 text = text.split("```")[1].split("```")[0]
 
-            parsed = json.loads(text.strip())
+            parsed = json.loads(text.strip(), strict=False)
             if isinstance(parsed, dict):
                 return self._normalize_analysis(parsed, validation_mode)
             return parsed

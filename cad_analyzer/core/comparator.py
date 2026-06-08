@@ -130,7 +130,8 @@ def _call_gemini(
     retries: int = 2,
 ) -> Dict[str, Any]:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-3.5-flash")
+    model_name = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash')
+    model = genai.GenerativeModel(model_name)
 
     parts = [
         _COMPARISON_PROMPT,
@@ -161,7 +162,7 @@ def _parse_json(text: str) -> Dict[str, Any]:
         if t.startswith("json"):
             t = t[4:]
     try:
-        return json.loads(t.strip())
+        return json.loads(t.strip(), strict=False)
     except Exception as e:
         return {"error": f"JSON parse error: {e}", "raw": text[:500]}
 
