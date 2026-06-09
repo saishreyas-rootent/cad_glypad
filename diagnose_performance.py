@@ -157,7 +157,7 @@ def quick_test_api_speed():
         return
     
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-3-flash-preview')
+    model = genai.GenerativeModel('gemini-3.1-flash-lite')
     
     # Simple text prompt (should be fast)
     print("\nTest 1: Simple text prompt...")

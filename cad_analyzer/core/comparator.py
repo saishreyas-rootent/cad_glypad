@@ -130,7 +130,7 @@ def _call_gemini(
     retries: int = 2,
 ) -> Dict[str, Any]:
     genai.configure(api_key=api_key)
-    model_name = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash')
+    model_name = os.getenv('GEMINI_MODEL', 'gemini-3.1-flash-lite')
     model = genai.GenerativeModel(model_name)
 
     parts = [

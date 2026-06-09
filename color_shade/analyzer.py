@@ -23,7 +23,7 @@ def analyze_drawing(file_path, output_path):
     
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-3-flash-preview')
+    model = genai.GenerativeModel('gemini-3.1-flash-lite')
     
     # 3. Optimize for Speed: Downscale and Compress before AI call
     img_pil = Image.open(working_image)

@@ -29,7 +29,7 @@ class CADAnalyzer:
             raise ValueError("GEMINI_API_KEY not found")
         
         genai.configure(api_key=self.api_key)
-        model_name = os.getenv('GEMINI_MODEL', 'gemini-3.5-flash')
+        model_name = os.getenv('GEMINI_MODEL', 'gemini-3.1-flash-lite')
         self.model = genai.GenerativeModel(model_name)
         self.request_timeout_seconds = int(os.getenv("GEMINI_TIMEOUT_SECONDS", "90"))
         self.pdf_request_timeout_seconds = int(os.getenv("GEMINI_PDF_TIMEOUT_SECONDS", "180"))
