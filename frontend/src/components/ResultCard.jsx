@@ -54,20 +54,15 @@ function EmptyState({ children }) {
   )
 }
 
-// ── Gemini quota warning ──────────────────────────────────────────────────────
-function GeminiWarning({ warning }) {
+// ── OCR warning ──────────────────────────────────────────────────────────────
+function OcrWarning({ warning }) {
   if (!warning) return null
-
-  const isQuota =
-    warning.toLowerCase().includes('rate-limit') ||
-    warning.toLowerCase().includes('quota') ||
-    warning.toLowerCase().includes('429')
 
   return (
     <div style={{
-      background: isQuota ? 'rgba(180,83,9,0.06)' : 'rgba(180,83,9,0.04)',
-      border: `1px solid ${isQuota ? 'rgba(180,83,9,0.35)' : 'rgba(180,83,9,0.2)'}`,
-      borderLeft: `4px solid ${isQuota ? 'var(--warn)' : 'rgba(180,83,9,0.4)'}`,
+      background: 'rgba(180,83,9,0.04)',
+      border: '1px solid rgba(180,83,9,0.2)',
+      borderLeft: '4px solid rgba(180,83,9,0.4)',
       borderRadius: 'var(--r)',
       padding: '12px 16px',
       display: 'flex',
@@ -81,7 +76,7 @@ function GeminiWarning({ warning }) {
           <line x1="12" y1="9" x2="12" y2="13" />
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
-        {isQuota ? 'Gemini Free-Tier Quota Reached' : 'Gemini Warning'}
+        OCR Warning
       </div>
 
       {/* Message */}
@@ -89,19 +84,13 @@ function GeminiWarning({ warning }) {
         {warning}
       </div>
 
-      {/* Quota-specific help box */}
-      {isQuota && (
-        <div style={{ marginTop: '4px', padding: '8px 12px', background: 'rgba(0,0,0,0.04)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--mono)', fontSize: '12px', color: 'var(--text-dim)', lineHeight: 1.8 }}>
-          <strong style={{ color: 'var(--text)' }}>What you can do:</strong><br />
-          · Wait ~1 minute and retry — free tier resets per minute &amp; per day<br />
-          · The pixel-level diff below still shows all visual changes<br />
-          · Upgrade to a paid Gemini API key for unlimited semantic analysis<br />
-          · Check your quota at{' '}
-          <a href="https://ai.dev/rate-limit" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
-            ai.dev/rate-limit
-          </a>
-        </div>
-      )}
+      <div style={{ marginTop: '4px', padding: '8px 12px', background: 'rgba(0,0,0,0.04)', borderRadius: 'var(--r-sm)', fontFamily: 'var(--mono)', fontSize: '12px', color: 'var(--text-dim)', lineHeight: 1.8 }}>
+        <strong style={{ color: 'var(--text)' }}>What you can do:</strong><br />
+        · Install the native Tesseract OCR binary on the host machine<br />
+        · Set <code>TESSERACT_CMD</code> if the binary is not on PATH<br />
+        · The OpenCV pixel diff still shows visual changes<br />
+        · Retry with a higher-resolution scan if OCR confidence is low
+      </div>
     </div>
   )
 }
@@ -420,13 +409,13 @@ function ReportTab({ report, info = {}, dims = [], gdts = [], mfg = {}, gauge = 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <style>{`
-        @media print {
-          html, body, #root { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; }
-          .app-container, .main-container, .result-wrapper, .result-card-container, .tab-content-container { height: auto !important; min-height: 0 !important; max-height: none !important; overflow: visible !important; position: static !important; display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; background: transparent !important; box-shadow: none !important; }
-          header, aside, .multi-tab-bar, .result-header, .result-tab-bar, .no-print { display: none !important; }
-          #glypad-report-print-container { position: static !important; width: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; background: white !important; color: #000000 !important; display: flex !important; flex-direction: column !important; gap: 20px !important; height: auto !important; overflow: visible !important; }
-        }
-      `}</style>
+          @media print {
+            html, body, #root { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; }
+            .app-container, .main-container, .result-wrapper, .result-card-container, .tab-content-container { height: auto !important; min-height: 0 !important; max-height: none !important; overflow: visible !important; position: static !important; display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; background: transparent !important; box-shadow: none !important; }
+            header, aside, .multi-tab-bar, .result-header, .result-tab-bar, .no-print { display: none !important; }
+            #glypad-report-print-container { position: static !important; width: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; border: none !important; background: white !important; color: #000000 !important; display: flex !important; flex-direction: column !important; gap: 20px !important; height: auto !important; overflow: visible !important; }
+          }
+        `}</style>
 
       <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '10px 14px', background: 'var(--panel-hi)', border: '1px solid var(--border)', borderRadius: 'var(--r-sm)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -606,9 +595,10 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
     deviation: { color: 'var(--warn)', bg: 'rgba(180,83,9,0.08)', border: 'rgba(180,83,9,0.25)' },
     added: { color: 'var(--info)', bg: 'rgba(29,95,180,0.08)', border: 'rgba(29,95,180,0.25)' },
     removed: { color: 'var(--error)', bg: 'rgba(192,24,46,0.08)', border: 'rgba(192,24,46,0.25)' },
+    changed: { color: 'var(--accent)', bg: 'rgba(232,160,32,0.08)', border: 'rgba(232,160,32,0.25)' },
   }[s] || { color: 'var(--success)', bg: 'rgba(14,124,74,0.08)', border: 'rgba(14,124,74,0.25)' })
 
-  const statusIcon = (s) => ({ match: '✓', deviation: '⚠', added: '+', removed: '−' }[s] || '?')
+  const statusIcon = (s) => ({ match: '✓', deviation: '⚠', added: '+', removed: '−', changed: '→' }[s] || '?')
 
   const thStyle = { ...monoSm, textTransform: 'uppercase', color: 'var(--text-dim)', padding: '9px 12px', borderBottom: '1px solid var(--border)', background: 'var(--panel-hi)', whiteSpace: 'nowrap', textAlign: 'left' }
 
@@ -707,7 +697,12 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
           {/* Highlight legend */}
           {result && rightView === 'highlighted' && (
             <div style={{ padding: '6px 12px', borderTop: '1px solid var(--border)', display: 'flex', gap: '14px', flexWrap: 'wrap', flexShrink: 0, background: 'rgba(0,0,0,0.03)' }}>
-              {[{ colour: 'rgb(0,140,255)', label: 'Deviation' }, { colour: 'rgb(0,200,60)', label: 'Added' }, { colour: 'rgb(0,60,220)', label: 'Removed' }].map(({ colour, label }) => (
+              {[
+                { colour: 'rgb(249,115,22)', label: 'Deviation' },
+                { colour: 'rgb(34,197,94)', label: 'Added' },
+                { colour: 'rgb(59,130,246)', label: 'Removed' },
+                { colour: 'rgb(234,179,8)', label: 'Changed' },
+              ].map(({ colour, label }) => (
                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: colour, flexShrink: 0 }} />
                   <span style={{ ...monoSm, color: 'var(--text-dim)', textTransform: 'uppercase' }}>{label}</span>
@@ -736,8 +731,8 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
         </div>
       )}
 
-      {/* ── Gemini quota / warning (non-fatal) ── */}
-      <GeminiWarning warning={result?.gemini_error} />
+      {/* ── OCR warning (non-fatal) ── */}
+      <OcrWarning warning={result?.ocr_warning} />
 
       {/* ── Comparison table ── */}
       {rows.length > 0 && (
@@ -752,6 +747,7 @@ function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
               <FilterChip value="deviation" label="Deviation" count={statusCounts.deviation || 0} />
               <FilterChip value="added" label="Added" count={statusCounts.added || 0} />
               <FilterChip value="removed" label="Removed" count={statusCounts.removed || 0} />
+              <FilterChip value="changed" label="Changed" count={statusCounts.changed || 0} />
               <FilterChip value="match" label="Match" count={statusCounts.match || 0} />
             </div>
           </div>

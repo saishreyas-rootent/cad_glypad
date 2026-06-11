@@ -1,0 +1,81 @@
+<USER_REQUEST>
+// ── ComparisionTab ─────────────────────────────────────────────────────────────
+// Drop-in replacement for the ComparisionTab function in ResultCard.jsx
+// Improvements:
+//  • Cleaner image panes with proper sticky headers
+//  • Summary stat bar with similarity score
+//  • Polished status chips + row hover
+//  • Marker column cross-references the highlighted image badges
+//  • Responsive column widths via table-layout: fixed
+
+function ComparisionTab({ previewUrl, originalFile, originalDims = [] }) {
+  const [comparedFile, setComparedFile] = useState(null)
+  const [isComparing, setIsComparing] = useState(false)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState(null)
+  const [dragOver, setDragOver] = useState(false)
+  const [rightView, setRightView] = useState('highlighted')
+  const [filter, setFilter] = useState('all')
+  const [zoomL, setZoomL] = useState(100)
+  const [zoomR, setZoomR] = useState(100)
+
+  const runComparison = async (file) => {
+    if (!originalFile) { setError('Original file is not available. Please re-analyse the drawing first.'); return }
+    setIsComparing(true); setError(null); setResult(null); setRightView('highlighted')
+    try {
+      const fd = new FormData()
+      fd.append('file1', originalFile)
+      fd.append('file2', file)
+      const res = await fetch('/compare', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`)
+      if (!data.success) throw new Error(data.error || 'Comparison failed')
+      setResult(data)
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setIsComparing(false)
+    }
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault(); setDragOver(false)
+    const files = e.dataTransfer.files
+    if (files.length > 0) { setComparedFile(files[0]); runComparison(files[0]) }
+  }
+
+  const handleB
+<truncated 24439 bytes>
+e to begin comparison
+          <br />
+          <span style={{ opacity: 0.45, fontSize: '11px' }}>
+            Tesseract OCR compares every dimension, annotation and GD&T symbol · Pixel-level diff overlay included
+          </span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+replace the current comparision tab code with the above one asap
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-06-09T17:15:37+05:30.
+
+The user's current state is as follows:
+Active Document: c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\cad_analyzer\core\comparator.py (LANGUAGE_PYTHON)
+Cursor is on line: 1
+Other open documents:
+- c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\cad_analyzer\core\comparator.py (LANGUAGE_PYTHON)
+- c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\cad_analyzer\core\analyzer.py (LANGUAGE_PYTHON)
+- c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\cad_analyzer\api\server.py (LANGUAGE_PYTHON)
+- c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\render.yaml (LANGUAGE_YAML)
+- c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\requirements.txt (LANGUAGE_UNSPECIFIED)
+Running terminal commands:
+- npm run dev (in c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71\frontend, running for 2h20m19s)
+- python -m uvicorn cad_analyzer.api.server:app --host 0.0.0.0 --port 8000 --re... (in c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71, running for 2h4m41s)
+- python -m uvicorn cad_analyzer.api.server:app --host 0.0.0.0 --port 8000 --re... (in c:\Users\Dell\CAD-drawings-e6d565afe1da1b0f5ea65371f1a7757566818c71, running for 1h19m57s)
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Sonnet 4.6 (Thinking) to Gemini 3.1 Pro (High). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>

@@ -64,10 +64,7 @@ _analyzer = None
 def get_analyzer():
     global _analyzer
     if _analyzer is None:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            raise HTTPException(status_code=500, detail="GEMINI_API_KEY not configured")
-        _analyzer = CADAnalyzer(api_key)
+        _analyzer = CADAnalyzer()
     return _analyzer
 
 
@@ -155,8 +152,7 @@ async def compare_drawings(
 ):
     """
     Compare two CAD drawings.
-    Uses Gemini Vision for semantic diff (dimensions, tolerances, GD&T, annotations)
-    AND OpenCV to draw highlight boxes on the revised drawing for every detected change.
+    Uses Tesseract OCR for text/dimension extraction and OpenCV for visual diffing.
 
     Returns:
     - highlighted_image_base64 : revised image with coloured bounding boxes drawn on it
@@ -182,15 +178,12 @@ async def compare_drawings(
     if not bytes2:
         raise HTTPException(status_code=400, detail="Comparison file is empty")
 
-    api_key = os.getenv("GEMINI_API_KEY")
-
     try:
         result = compare_images(
             file_bytes_1=bytes1,
             file_bytes_2=bytes2,
             filename_1=file1.filename or "original",
             filename_2=file2.filename or "compared",
-            api_key=api_key,
         )
         if not result.get("success"):
             raise HTTPException(status_code=400, detail=result.get("error", "Comparison failed"))

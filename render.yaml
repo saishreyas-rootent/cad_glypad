@@ -7,8 +7,8 @@ services:
       cd frontend && npm install && npm run build
     startCommand: uvicorn cad_analyzer.api.server:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: GEMINI_API_KEY
-        sync: false          # set manually in Render dashboard
+      - key: TESSERACT_CMD
+        sync: false          # optional: set if tesseract is not on PATH
       - key: ALLOWED_ORIGINS
         sync: false          # set to https://your-app.onrender.com after first deploy
     autoDeploy: true
