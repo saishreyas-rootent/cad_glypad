@@ -24,6 +24,7 @@ export default defineConfig({
       '/activities': 'http://localhost:8000',
       '/users': 'http://localhost:8000',
       '/analytics': 'http://localhost:8000',
+      '/admin': 'http://localhost:8000',
     },
   },
 })
