@@ -7,14 +7,21 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-from fastapi import FastAPI, File, UploadFile, HTTPException, Form
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional
 
+from cad_analyzer.services.activity_service import log_workflow_selected, log_file_upload, log_qc_analysis, log_comparison
+from cad_analyzer.services.session_service import get_email_for_session
+
 from cad_analyzer.core.comparator import compare_images
+from cad_analyzer.db.mongodb import close_mongo_connection, connect_to_mongo, is_configured
+from cad_analyzer.routers import activities, analytics, auth, sessions, user_analytics, users
+import asyncio
+from cad_analyzer.services.session_service import expire_idle_sessions
 
 try:
     from dotenv import load_dotenv
@@ -49,6 +56,39 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
+
+app.include_router(auth.router)
+app.include_router(sessions.router)
+app.include_router(activities.router)
+app.include_router(user_analytics.router)
+app.include_router(users.router)
+app.include_router(analytics.router)
+
+try:
+    from cad_analyzer.routers.admin import router as admin_router
+    app.include_router(admin_router)
+except ImportError:
+    pass  # We will add it shortly
+
+
+@app.on_event("startup")
+async def startup_event():
+    if is_configured():
+        await connect_to_mongo()
+    asyncio.create_task(_session_reaper())
+
+async def _session_reaper():
+    while True:
+        await asyncio.sleep(300)
+        try:
+            await expire_idle_sessions()
+        except Exception:
+            pass
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await close_mongo_connection()
 
 
 # ── Response models ───────────────────────────────────────────────────────────
@@ -96,6 +136,7 @@ async def health_check():
 
 @app.post("/analyze", tags=["Analysis"])
 async def analyze_drawing(
+    request: Request,
     file: UploadFile = File(...),
     tolerance_class: str = Form("m"),
     validation_mode: str = Form("ISO"),
@@ -123,6 +164,13 @@ async def analyze_drawing(
         standard_filename = standard_doc.filename
 
     try:
+        session_id = request.cookies.get("session_id") or request.headers.get("X-Session-ID")
+        email = get_email_for_session(session_id)
+        if email:
+            await log_workflow_selected(email, "QC", session_id)
+            await log_file_upload(email, session_id=session_id, file_name=file.filename or "drawing.jpg", file_type=file.content_type, file_size=len(file_bytes), workflow="QC")
+            await log_qc_analysis(email, session_id=session_id, status="Started")
+
         result = get_analyzer().analyze(
             file_bytes=file_bytes,
             filename=file.filename or "drawing.jpg",
@@ -136,17 +184,26 @@ async def analyze_drawing(
             result["_metadata"].setdefault("source_file", file.filename or "drawing.jpg")
         if isinstance(result, dict) and result.get("error"):
             raise HTTPException(status_code=502, detail=result["error"])
+        if email:
+            await log_qc_analysis(email, session_id=session_id, status="Completed")
         return JSONResponse(content=result)
     except ValueError as e:
+        if email:
+            await log_qc_analysis(email, session_id=session_id, status="Failed", metadata={"error": str(e)})
         raise HTTPException(status_code=400, detail=str(e))
-    except HTTPException:
+    except HTTPException as e:
+        if email:
+            await log_qc_analysis(email, session_id=session_id, status="Failed", metadata={"error": str(e.detail)})
         raise
     except Exception as e:
+        if email:
+            await log_qc_analysis(email, session_id=session_id, status="Failed", metadata={"error": str(e)})
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 
 @app.post("/compare", tags=["Comparison"])
 async def compare_drawings(
+    request: Request,
     file1: UploadFile = File(...),
     file2: UploadFile = File(...),
 ):
@@ -179,6 +236,14 @@ async def compare_drawings(
         raise HTTPException(status_code=400, detail="Comparison file is empty")
 
     try:
+        session_id = request.cookies.get("session_id") or request.headers.get("X-Session-ID")
+        email = get_email_for_session(session_id)
+        if email:
+            await log_workflow_selected(email, "COMPARISON", session_id)
+            await log_file_upload(email, session_id=session_id, file_name=file1.filename or "original", file_type=file1.content_type, file_size=len(bytes1), workflow="COMPARISON")
+            await log_file_upload(email, session_id=session_id, file_name=file2.filename or "compared", file_type=file2.content_type, file_size=len(bytes2), workflow="COMPARISON")
+            await log_comparison(email, session_id=session_id, status="Started")
+
         result = compare_images(
             file_bytes_1=bytes1,
             file_bytes_2=bytes2,
@@ -187,15 +252,22 @@ async def compare_drawings(
         )
         if not result.get("success"):
             raise HTTPException(status_code=400, detail=result.get("error", "Comparison failed"))
+        if email:
+            await log_comparison(email, session_id=session_id, status="Completed")
         return JSONResponse(content=result)
-    except HTTPException:
+    except HTTPException as e:
+        if email:
+            await log_comparison(email, session_id=session_id, status="Failed", metadata={"error": str(e.detail)})
         raise
     except Exception as e:
+        if email:
+            await log_comparison(email, session_id=session_id, status="Failed", metadata={"error": str(e)})
         raise HTTPException(status_code=500, detail=f"Comparison failed: {str(e)}")
 
 
 @app.post("/analyze/batch", tags=["Analysis"])
 async def analyze_batch(
+    request: Request,
     files: list[UploadFile] = File(...),
     tolerance_class: str = Form(default="m"),
     validation_mode: str = Form(default="ISO"),

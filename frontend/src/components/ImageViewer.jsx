@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 
-export default function ImageViewer({ src, isPdf, isTab = false }) {
+export default function ImageViewer({ src, isPdf, isTab = false, highlights = [], imageNaturalSize = null }) {
   const vpRef = useRef(null)
   const imgRef = useRef(null)
   const drag = useRef(null)
@@ -8,6 +8,7 @@ export default function ImageViewer({ src, isPdf, isTab = false }) {
   const [pan, setPan] = useState({ x: 0, y: 0 })
   const [ready, setReady] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [naturalSize, setNaturalSize] = useState(null)
 
   const zoomPct = Math.round(zoom * 100)
 
@@ -51,6 +52,7 @@ export default function ImageViewer({ src, isPdf, isTab = false }) {
     if (!vp || !img) return
     const vw = vp.clientWidth, vh = vp.clientHeight
     const iw = img.naturalWidth, ih = img.naturalHeight
+    setNaturalSize({ w: iw, h: ih })
     const z = Math.min((vw - 40) / iw, (vh - 40) / ih)
     setZoom(z)
     setPan({ x: 0, y: 0 })
@@ -109,8 +111,74 @@ export default function ImageViewer({ src, isPdf, isTab = false }) {
 
   if (!src) return null
 
+  // Convert box_2d [ymin, xmin, ymax, xmax] (0-1000 range) to pixel-based CSS overlay
+  const renderHighlights = () => {
+    if (!highlights.length || !ready || !naturalSize) return null
+    const iw = naturalSize.w
+    const ih = naturalSize.h
+
+    return highlights.map((hl, idx) => {
+      const box = hl.box_2d
+      if (!box || box.length !== 4) return null
+      const [ymin, xmin, ymax, xmax] = box
+
+      // Convert from 0-1000 normalized to actual image pixels
+      const left = (xmin / 1000) * iw
+      const top = (ymin / 1000) * ih
+      const w = ((xmax - xmin) / 1000) * iw
+      const h = ((ymax - ymin) / 1000) * ih
+
+      const isError = hl.status === 'error'
+      const color = isError ? 'rgba(244, 63, 94, 0.85)' : 'rgba(52, 211, 153, 0.85)'
+      const bgColor = isError ? 'rgba(244, 63, 94, 0.15)' : 'rgba(52, 211, 153, 0.15)'
+      const borderColor = isError ? 'rgba(244, 63, 94, 0.9)' : 'rgba(52, 211, 153, 0.9)'
+
+      return (
+        <div key={idx} style={{ pointerEvents: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+          {/* Highlight box */}
+          <div style={{
+            position: 'absolute',
+            left: `${left}px`, top: `${top}px`,
+            width: `${w}px`, height: `${h}px`,
+            background: bgColor,
+            border: `3px solid ${borderColor}`,
+            borderRadius: '2px',
+            boxShadow: `0 0 12px ${color}, 0 0 24px ${isError ? 'rgba(244,63,94,0.3)' : 'rgba(52,211,153,0.3)'}`,
+            animation: 'highlightPulse 1.5s ease-in-out infinite',
+          }} />
+          {/* Label */}
+          {hl.label && (
+            <div style={{
+              position: 'absolute',
+              left: `${left}px`,
+              top: `${top - 24}px`,
+              background: borderColor,
+              color: '#fff',
+              fontFamily: 'var(--mono)',
+              fontSize: '11px',
+              fontWeight: 700,
+              padding: '2px 8px',
+              borderRadius: '3px 3px 0 0',
+              whiteSpace: 'nowrap',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+            }}>
+              {hl.label}
+            </div>
+          )}
+        </div>
+      )
+    })
+  }
+
   return (
     <div style={panelStyle}>
+      <style>{`
+        @keyframes highlightPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
+      `}</style>
       <div style={headerStyle}>
         <span style={titleStyle}>Drawing Preview</span>
         <div style={{ display: 'flex', gap: '6px' }}>
@@ -136,19 +204,24 @@ export default function ImageViewer({ src, isPdf, isTab = false }) {
         onMouseEnter={() => setHovered(true)}
         style={{ flex: 1, overflow: 'hidden', cursor: drag.current ? 'grabbing' : 'grab', position: 'relative', background: 'var(--panel-hi)', userSelect: 'none' }}
       >
-        <img
-          ref={imgRef}
-          src={src}
-          alt="CAD Drawing"
-          onLoad={fitToScreen}
-          draggable={false}
-          style={{
-            position: 'absolute', top: '50%', left: '50%',
-            transform: `translate(calc(-50% + ${pan.x}px), calc(-50% + ${pan.y}px)) scale(${zoom})`,
-            transformOrigin: 'center', transition: drag.current ? 'none' : 'transform 0.05s',
-            maxWidth: 'none', display: 'block',
-          }}
-        />
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: `translate(calc(-50% + ${pan.x}px), calc(-50% + ${pan.y}px)) scale(${zoom})`,
+          transformOrigin: 'center', transition: drag.current ? 'none' : 'transform 0.05s',
+        }}>
+          <img
+            ref={imgRef}
+            src={src}
+            alt="CAD Drawing"
+            onLoad={fitToScreen}
+            draggable={false}
+            style={{
+              maxWidth: 'none', display: 'block',
+            }}
+          />
+          {/* Overlay highlights on top of image, inside the same transform container */}
+          {renderHighlights()}
+        </div>
 
         {!ready && (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--panel-hi)' }}>

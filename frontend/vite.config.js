@@ -18,6 +18,12 @@ export default defineConfig({
       '/analyze': 'http://localhost:8000',
       '/health': 'http://localhost:8000',
       '/compare': 'http://localhost:8000',
+      '/auth': 'http://localhost:8000',
+      '/session': 'http://localhost:8000',
+      '/activity': 'http://localhost:8000',
+      '/activities': 'http://localhost:8000',
+      '/users': 'http://localhost:8000',
+      '/analytics': 'http://localhost:8000',
     },
   },
 })

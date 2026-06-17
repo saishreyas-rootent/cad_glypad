@@ -1,0 +1,791 @@
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+"import ResultCard from './components/ResultCard'"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+  const modes = [
+    {
+      id: 'qc',
+      eyebrow: 'Quality Control',
+      title: 'Analyze a drawing',
+      description: 'Extract dimensions, validate tolerances, and review drawing quality against ISO or organizational standards.',
+      color: 'var(--accent)',
+    },
+    {
+      id: 'comparison',
+      eyebrow: 'Revision Review',
+      title: 'Compare drawings',
+      description: 'Load an original drawing, add a revision, and inspect detected dimensional and visual changes.',
+      color: 'var(--info)',
+    },
+  ]
+
+  return (
+    <main style={{
+      position: 'relative', zIndex: 1, minHeight: '100vh',
+      display: 'flex', flexDirection: 'column', padding: '0 32px 40px',
+    }}>
+      <header style={{
+        height: 72, display: 'flex', alignItems: 'center',
+        justifyContent: 'space-between', borderBottom: '1px solid var(--border)',
+      }}>
+        <img src={glypadLogo} alt="GLYPAD" style={{ height: 20, width: 'auto' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--text-dim)' }}>
+            {user?.username}
+          </span>
+          <button
+            onClick={onLogout}
+            style={{
+              background: 'var(--panel)', border: '1px solid var(--border)',
+              borderRadius: 'var(--r-sm)', padding: '7px 11px',
+              color: 'var(--text-dim)', fontFamily: 'var(--mono)',
+              fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase',
+              cursor: 'pointer',
+            }}
+          >
+            Sign out
+          </button>
+        </div>
+      </header>
+
+      <section style={{
+        width: '100%', maxWidth: 980, margin: 'auto',
+        padding: '56px 0', animation: 'riseIn 0.3s ease',
+      }}>
+        <div style={{
+          fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.16em',
+          textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 10,
+        }}>
+          Drawing Workspace
+        </div>
+        <h1 style={{
+          maxWidth: 620, fontFamily: 'var(--display)', fontSize: 42,
+          lineHeight: 1.1, color: 'var(--text-hi)', marginBottom: 12,
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+          What would you like to inspect?
+        </h1>
+        <p style={{ color: 'var(--text-dim)', marginBottom: 34 }}>
+          Choose a workflow to begin.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 18 }}>
+          {modes.map(mode => (
+            <button
+              key={mode.id}
+              onClick={() => onSelectMode(mode.id)}
+              style={{
+                minHeight: 230, padding: 26, textAlign: 'left',
+                background: 'rgba(255,255,255,0.96)',
+                border: '1px solid var(--border)', borderRadius: 'var(--r)',
+                boxShadow: '0 12px 34px rgba(15,25,41,0.08)',
+                cursor: 'pointer', transition: 'transform 0.15s, border-color 0.15s',
+              }}
+              onMouseEnter={event => {
+                event.currentTarget.style.transform = 'translateY(-3px)'
+                event.currentTarget.style.borderColor = mode.color
+              }}
+              onMouseLeave={event => {
+                event.currentTarget.style.transform = ''
+                event.currentTarget.style.borderColor = 'var(--border)'
+              }}
+            >
+              <div style={{
+                width: 38, height: 38, display: 'grid', placeItems: 'center',
+                borderRadius: 'var(--r-sm)', background: mode.color,
+                color: '#fff', fontFamily: 'var(--mono)', fontWeight: 700,
+                marginBottom: 28,
+              }}>
+                {mode.id === 'qc' ? 'QC' : 'DIFF'}
+              </div>
+              <div style={{
+                fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em',
+                textTransform: 'uppercase', color: mode.color, marginBottom: 8,
+              }}>
+                {mode.eyebrow}
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+    const pending = files.filter(f => !f.analyzed)
+    if (!pending.length) return
+
+    setLoading(true)
+    setError(null)
+
+    let mi = 0
+    setLoadMsg(LOAD_MSGS[0])
+    msgTimer.current = setInterval(() => {
+      mi = (mi + 1) % LOAD_MSGS.length
+      setLoadMsg(LOAD_MSGS[mi])
+    }, 2200)
+
+    try {
+      const isBatch = pending.length > 1
+      const fd = new FormData()
+      if (isBatch) pending.forEach(({ file }) => fd.append('files', file))
+      else fd.append('file', pending[0].file)
+      fd.append('tolerance_class', tolClass)
+      fd.append('validation_mode', validationMode)
+      if (standardDoc && validationMode !== 'ISO') {
+        fd.append('standard_doc', standardDoc)
+      }
+
+      const res = await fetch(`${apiUrl}/analyze${isBatch ? '/batch' : ''}`, { method: 'POST', body: fd })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`)
+
+      const list = isBatch ? (data.results || [data]) : [data]
+      const newResults = list.map((r, i) => {
+        const entry = pending[i] || pending[0]
+        return { data: r, previewUrl: entry?.previewUrl || null, isPdf: entry ? /\.pdf$/i.test(entry.file.name) : false, originalFile: entry?.file || null }
+      })
+
+      setResults(prev => {
+        const merged = [...prev, ...newResults]
+        setActiveResult(merged.length - 1)
+        return merged
+      })
+      setFiles(prev => prev.map(f => pending.includes(f) ? { ...f, analyzed: true } : f))
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      clearInterval(msgTimer.current)
+      setLoading(false)
+    }
+  }
+
+  const activePreview = files[activeFi]?.previewUrl || null
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+  return (
+    <div className="app-container" style={{
+      position: 'relative', zIndex: 1,
+      display: 'grid',
+      gridTemplateRows: '60px 1fr',
+      gridTemplateColumns: isSidebarCollapsed ? '40px 1fr' : '310px 1fr',
+      gridTemplateAreas: '"top top" "side main"',
+      transition: 'grid-template-columns 0.3s ease',
+      height: '100vh',
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+    }}>
+
+      {/* ── Topbar ── */}
+      <header style={{
+        gridArea: 'top', display: 'flex', alignItems: 'center',
+        justifyContent: 'space-between', padding: '0 24px',
+        borderBottom: '1px solid var(--border)',
+        background: 'rgba(240,242,245,0.97)', backdropFilter: 'blur(12px)', zIndex: 50,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <img src={glypadLogo} alt="GLYPAD Logo" style={{ height: '18px', width: 'auto', display: 'block', objectFit: 'contain' }} />
+          <div style={{ width: '1px', height: '18px', background: 'var(--border)' }} />
+          <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--text-dim)', letterSpacing: '0.08em', lineHeight: 1.3 }}>
+            CAD DRAWING<br />ANALYZER
+              title="Collapse sidebar"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+"            <button\n              onClick={onBack}\n              style={{\n            <button"
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+              onClick={onBack}
+              style={{
+                background: 'none', border: 'none',
+                fontFamily: 'var(--mono)', fontSize: 11,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                color: 'var(--text-dim)', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 4,
+                transition: 'color 0.15s',
+"              onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}\n            style={{\n              width: '100%', height: '100%',\n              background: 'none', border: 'none',\n              cursor: 'pointer', display: 'flex',\n              alignItems: 'center', justifyContent: 'center',\n              padding: 0,\n            }}\n            title=\"Expand sidebar\"\n          >\n            <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"var(--text-dim)\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\">\n              <polyline points=\"9 18 15 12 9 6\" />\n            </svg>\n          </button>\n        )}"
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+              onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+"              Home\n            </button>\n            <div style={{ width: 1, height: 14, background: 'var(--border)' }} />\n        gridArea: 'side', borderRight: '1px solid var(--border)',\n        background: 'var(--surface)', display: 'flex', flexDirection: 'column',\n        overflow: 'hidden', minHeight: 0,\n        position: 'relative',\n      }}>"
+              Home
+            </button>
+            <div style={{ width: 1, height: 14, background: 'var(--border)' }} />
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>QC Check</span>
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+      {/* ── Main area ── */}
+"        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>\n          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--text-dim)', letterSpacing: '0.06em' }}>{user?.username}</span>\n          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--text-dim)', letterSpacing: '0.06em' }}>\n            <div style={{ width: '8px', height: '8px', borderRadius: '50%', transition: 'all 0.4s', background: apiOnline === null ? 'var(--text-dim)' : apiOnline ? 'var(--success)' : 'var(--error)', boxShadow: apiOnline === true ? `0 0 8px var(--success)` : apiOnline === false ? `0 0 8px var(--error)` : 'none' }} />\n            <span>{apiOnline === null ? 'Checking…' : apiOnline ? 'Online' : 'Offline'}</span>\n          </div>\n        </div>"
+
+        {/* Multi-result tab bar */}
+        {results.length > 1 && (
+          <div className="multi-tab-bar" style={{ display: 'flex', gap: '0', borderBottom: '1px solid var(--border)', background: 'var(--panel-hi)', overflowX: 'auto', flexShrink: 0 }}>
+            {results.map((r, i) => {
+              const fn = r.data._metadata?.source_file || r.data.drawing_info?.drawing_number || `File ${i + 1}`
+              const isActive = i === activeResult
+              return (
+                <button key={i} onClick={() => !loading && setActiveResult(i)} style={{ fontFamily: 'var(--mono)', fontSize: '14px', letterSpacing: '0.06em', padding: '10px 18px', background: 'none', border: 'none', borderBottom: `2px solid ${isActive ? 'var(--accent)' : 'transparent'}`, color: isActive ? 'var(--text-hi)' : 'var(--text-dim)', cursor: loading ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <span style={{ fontSize: '8px', background: isActive ? 'var(--accent)' : 'var(--border-hi)', color: isActive ? '#fff' : 'var(--text-dim)', padding: '1px 5px', borderRadius: '2px' }}>{fn.split('.').pop().toUpperCase()}</span>
+                  {fn.length > 28 ? fn.slice(0, 26) + '…' : fn}
+                </but
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'var(--text-dim)', letterSpacing: '0.06em' }}>Processing document, please wait</div>
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-start', padding: '24px' }}>
+              <div style={{ background: 'rgba(192,24,46,0.05)', border: '1px solid rgba(192,24,46,0.25)', borderRadius: 'var(--r)', padding: '18px', fontFamily: 'var(--mono)', fontSize: '16px', color: 'var(--error)', width: '100%' }}>
+                <div style={{ fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px', opacity: 0.6 }}>Analysis Failed</div>
+                {error}
+              </div>
+            </div>
+          )}
+
+          {/* Results */}
+          {results.length > 0 && !loading && (
+            <div className="result-wrapper" style={{ position: 'absolute', inset: 0 }}>
+              <ResultCard 
+                key={activeResult} 
+                data={results[activeResult].data} 
+                previewUrl={results[activeResult].previewUrl} 
+                isPdf={results[activeResult].isPdf}
+                validationMode={validationMode}
+                originalFile={results[activeResult].originalFile}
+                onTabChange={(tab) => setIsSidebarCollapsed(tab === 'Comparision')}
+              />
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default function App() {
+  return <AnalyzerApp />
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--error)'; e.currentTarget.style.background = 'rgba(192,24,46,0.08)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-dim)'; e.currentTarget.style.background = 'none'; }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {activePreview && (
+              <div style={{ borderRadius: 'var(--r-sm)', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--panel-hi)' }}>
+                <img src={activePreview} alt="Preview" style={{ width: '100%', display: 'block', objectFit: 'contain', maxHeight: '160px' }} />
+              </div>
+            )}
+          </div>
+
+          {/* Org Standard Upload zone */}
+          {validationMode !== 'ISO' && (
+            <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
+              <SidebarLabel>Organizational Standard</SidebarLabel>
+              <d
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-hi)', marginBottom: '3px' }}>Upload Document</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: '12px', color: 'var(--text-dim)', letterSpacing: '0.06em' }}>PDF · DOCX · TXT</div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Validation Mode selector */}
+          <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
+            <SidebarLabel>Validation Mode</SidebarLabel>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '5px' }}>
+              {[['ISO', 'ISO Only'], ['Org', 'Org Only'], ['Both', 'Both']].map(([val, label]) => (
+                <button key={val} onClick={() => setValidationMode(val)} style={{
+                  background: validationMode === val ? 'var(--accent-dim)' : 'var(--panel-hi)',
+                  border: `1px solid ${validationMode === val ? 'var(--accent)' : 'var(--border)'}`,
+                  borderRadius: 'var(--r-sm)', padding: '8px 4px',
+                  fontFamily: 'var(--mono)', fontSize: '12px', fontWeight: 500,
+                  color: validationMode === val ? 'var(--accent)' : 'var(--text-dim)',
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+      </main>
+    </div>
+  )
+}
+
+export default function App() {
+  const [screen, setScreen] = useState('login')
+  const [user, setUser] = useState(null)
+
+"  const handleLogout = () => { setUser(null); setScreen('login') }"
+  const handleLogout = () => { setUser(null); setScreen('login') }
+  const handleSelectMode = (mode) => setScreen(mode === 'qc' ? 'qc' : 'comparison')
+  const handleBack = () => setScreen('landing')
+
+  if (screen === 'login')      return <LoginPage onLogin={handleLogin} />
+  if (screen === 'landing')    return <LandingPage user={user} onSelectMode={handleSelectMode} onLogout={handleLogout} />
+  if (screen === 'qc')         return <QCApp user={user} onBack={handleBack} />
+  if (screen === 'comparison') return <ComparisonApp user={user} onBack={handleBack} />
+  return null
+<line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+"function ComparisonApp({ user, onBack }) {\n  const [files, setFiles] = useState([])\n  const [tolClass] = useState('m')\n  const [apiUrl] = useState('')\n  const [apiOnline, setApiOnline] = useState(null)\n  const [results, setResults] = useState([])\n  const [activeResult, setActiveResult] = useState(0)\n  const [loading, setLoading] = useState(false)\n  const [loadMsg, setLoadMsg] = useState(LOAD_MSGS[0])\n  const [error, setError] = useState(null)\n  const [dragOver, setDragOver] = useState(false)\n\n  const fileInputRef = useRef(null)\n  const msgTimer = useRef(null)\n\n  const checkHealth = useCallback(async () => {\n    try {\n      const r = await fetch(`${apiUrl}/health`, { signal: AbortSignal.timeout(3000) })\n      setApiOnline(r.ok)\n    } catch { setApiOnline(false) }\n  }, [apiUrl])\n\n  useEffect(() => { checkHealth() }, [checkHealth])\n\n  const addFile = (f) => {\n    if (!/\\.(pdf|jpe?g|png|tiff?)$/i.test(f.name)) return\n    const entry = {\n      file: f,\n      previewUrl: /\\.(jpe?g|png|tiff?)$/i.test(f.name) ? URL.createObjectURL(f) : null,\n      analyzed: false,\n    }\n    setFiles([entry])\n  }\n\n  const analyze = async () => {\n    if (!files.length || files[0].analyzed) return\n    setLoading(true); setError(null)\n    let mi = 0; setLoadMsg(LOAD_MSGS[0])\n    msgTimer.current = setInterval(() => { mi = (mi + 1) % LOAD_MSGS.length; setLoadMsg(LOAD_MSGS[mi]) }, 2200)\n    try {\n      const fd = new FormData()\n      fd.append('file', files[0].file)\n      fd.append('tolerance_class', tolClass)\n      fd.append('validation_mode', 'ISO')\n      const res = await fetch(`${apiUrl}/analyze`, { method: 'POST', body: fd })\n      const data = await res.json()\n      if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`)\n      setResults([{ data, previewUrl: files[0].previewUrl, isPdf: /\\.pdf$/i.test(files[0].file.name), originalFile: files[0].file }])\n      setActiveResult(0)\n      setFiles(prev => prev.map(f => ({ ...f, analyzed: true })))\n    } catch (e) {\n      setError
+<truncated 8609 bytes>
+  const [files, setFiles] = useState([])
+  const [tolClass] = useState('m')
+  const [apiUrl] = useState('')
+  const [apiOnline, setApiOnline] = useState(null)
+  const [results, setResults] = useState([])
+  const [activeResult, setActiveResult] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [loadMsg, setLoadMsg] = useState(LOAD_MSGS[0])
+  const [error, setError] = useState(null)
+  const [dragOver, setDragOver] = useState(false)
+
+  const fileInputRef = useRef(null)
+  const msgTimer = useRef(null)
+
+  const checkHealth = useCallback(async () => {
+    try {
+      const r = await fetch(`${apiUrl}/health`, { signal: AbortSignal.timeout(3000) })
+      setApiOnline(r.ok)
+    } catch { setApiOnline(false) }
+  }, [apiUrl])
+
+  useEffect(() => { checkHealth() }, [checkHealth])
+
+  const addFile = (f) => {
+    if (!/\.(pdf|jpe?g|png|tiff?)$/i.test(f.name)) return
+    const entry = {
+      file: f,
+      previewUrl: /\.(jpe?g|png|tiff?)$/i.test(f.name) ? URL.createObjectURL(f) : null,
+      analyzed: false,
+    }
+    setFiles([entry])
+  }
+
+  const analyze = async () => {
+    if (!files.length || files[0].analyzed) return
+    setLoading(true); setError(null)
+    let mi = 0; setLoadMsg(LOAD_MSGS[0])
+    msgTimer.current = setInterval(() => { mi = (mi + 1) % L
+        {loading && (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+            <div style={{ width: 180, height: 2, background: 'var(--border)', borderRadius: 1, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: '-50%', width: '50%', height: '100%', background: 'linear-gradient(to right, transparent, var(--info), transparent)', animation: 'scan 1.3s ease-in-out infinite' }} />
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 14, letterSpacing: '0.1em', color: 'var(--info)', animation: 'blink 2s ease-in-out infinite' }}>{loadMsg}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.06em' }}>Loading original drawing…</div>
+          </div>
+        )}
+
+"        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>\n          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--text-dim)', letterSpacing: '0.06em' }}>{user?.username}</span>\n          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--mono)', fontSize: 13, color: 'var(--text-dim)', letterSpacing: '0.06em' }}>\n            <div style={{ width: 8, height: 8, borderRadius: '50%', background: apiOnline === null ? 'var(--text-dim)' : apiOnline ? 'var(--success)' : 'var(--error)', boxShadow: apiOnline === true ? '0 0 8px var(--success)' : 'none', transition: 'all 0.4s' }} />\n            <span>{apiOnline === null ? 'Checking…' : apiOnline ? 'Online' : 'Offline'}</span>\n          </div>\n        </div>"
+        {results.length > 0 && !loading && (
+          <div style={{ flex: 1, minHeight: 0, position: 'relative' }}>
+            <div style={{ position: 'absolute', inset: 0 }}>
+              <ResultCard
+                key={activeResult}
+                data={results[activeResult].data}
+                previewUrl={results[activeResult].previewUrl}
+                isPdf={results[activeResult].isPdf}
+                validationMode="ISO"
+                originalFile={results[activeResult].originalFile}
+                initialTab="Comparision"
+                onTabChange={() => {}}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

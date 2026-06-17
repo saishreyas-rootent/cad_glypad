@@ -22,3 +22,5 @@ static/
 # OS
 .DS_Store
 .vscode/
+IMPLEMENTATION_PLAN (1).md
+mongodb_activity_logging_fix.md
